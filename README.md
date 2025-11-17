@@ -10,6 +10,7 @@
         
         1.2.1. extract_model.py
         - KcELECTRA 모델 감성점수 추출
+        
         1.2.2. extract_emojidic.py
         - KNU 감성사전 감성점수 추출
         
