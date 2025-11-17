@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 (1) 독립변수 생성 통합 파이프라인
--1. ELECTRA 감성점수 생성 (extract_model_4.py 호출 또는 임포트)
--2. 감성사전 감성점수 생성 (extract_emojidic_5.py 호출 또는 임포트)
+-1. ELECTRA 감성점수 생성 (extract_model.py 호출 또는 임포트)
+-2. 감성사전 감성점수 생성 (extract_emojidic.py 호출 또는 임포트)
 -3. time slot 부여 (game_timeslots.csv의 Q1~Q8 시작시각 기반)
 -4. 최종 병합: id 기준으로 sent_score_model, emoji_score, time_slot, game_key 추가
 
@@ -16,14 +16,14 @@
 --------
 - base_jsonl           : final.json (id, subject, body, regdate, teams_id 포함)
 - game_timeslots_csv   : game_timeslots.csv (game_key,Q1~Q8 시작시각; Asia/Seoul)
-- extract_model_4.py    : ELECTRA 점수 생성 스크립트
-- extract_emojidic_5.py: 사전 점수 생성 스크립트
+- extract_model.py    : ELECTRA 점수 생성 스크립트
+- extract_emojidic.py: 사전 점수 생성 스크립트
 
 중간 산출(기본 경로)
 -------------------
 - model_out_jsonl   : final_with_model_sentiment.jsonl (id별 model 점수)
 - lex_out_jsonl    : final_score_dict.json           (id별 emoji_score)
-- timeslot_out_jsonl: final_with_timeslot.jsonl      (id별 time_slot, game_key)
+- timeslot_out_json: final_with_timeslot.json      (id별 time_slot, game_key)
 
 최종 산출
 ---------
@@ -48,11 +48,11 @@ CONFIG = {
     "model_out_jsonl": "final_score_model_sentiment.json",
     "lex_out_jsonl": "final_score_dict.json",
     "timeslot_out_jsonl": "final_with_timeslot.json",
-    "final_stage1_jsonl": "final_stage1_features.json",
+    "final_stage1_json": "final_stage1_features.json",
 
     # 외부 스크립트 파일명
-    "model_script": "extract_model_4.py",
-    "lex_script": "extract_emojidic_5.py",
+    "model_script": "extract_model.py",
+    "lex_script": "extract_emojidic.py",
 
     # 파이프라인 토글
     "RUN_MODEL": True,
@@ -419,3 +419,4 @@ if __name__ == "__main__":
         do_merge=not args.no_merge if CONFIG["MERGE"] else False,
         clamp_after_q8=CONFIG["CLAMP_AFTER_Q8"] and (not args.no_clamp_after_q8),
     )
+
